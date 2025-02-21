@@ -13,6 +13,14 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=Home}/{action=Index}/{id?}");
+//});
+
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

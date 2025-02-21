@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\NewFolder\" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\login.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\css\responsive.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.7" />
   </ItemGroup>
 
 </Project>

@@ -13,12 +13,38 @@ namespace ParkingManagement.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchQuery)
+        {
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                // Process the search query here
+                ViewBag.SearchTerm = searchQuery;
+            }
+            return View();
+        }
+
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Register()
         {
             return View();
         }
 
         public IActionResult Privacy()
+        {
+            return View();
+        }
+        public ActionResult About()
+        {
+            return View();
+        }
+        public IActionResult Price()
+        {
+            return View();
+        }
+        public IActionResult Read_More()
         {
             return View();
         }

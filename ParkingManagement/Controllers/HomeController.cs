@@ -1,16 +1,25 @@
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using ParkingManagement.Models;
+using System;
+using ParkingManagement.Data;
+using ParkingManagement.Migrations;
 
 namespace ParkingManagement.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly DataContext context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(DataContext context)
         {
-            _logger = logger;
+            this.context = context;
         }
 
         public IActionResult Index(string searchQuery)
@@ -27,7 +36,74 @@ namespace ParkingManagement.Controllers
         {
             return View();
         }
-        public IActionResult Register()
+        [HttpPost]
+        public IActionResult Login(User model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var user = context.Users
+                    .FirstOrDefault(u => u.Email == model.Email && u.Password == model.Password);
+
+                if (user != null)
+                {
+                    HttpContext.Session.SetString("UserEmail", user.Email);
+                    HttpContext.Session.SetString("UserRole", user.Role);
+
+                    if (user.Role == "Admin")
+                        return RedirectToAction("userDashboard", "UserDashboard"); 
+
+                    return RedirectToAction("userDashboard", "UserDashboard");
+                }
+
+                ViewBag.Error = "Invalid email or password.";
+            }
+
+            return View("Index");
+        }
+
+
+        //[HttpPost]
+        //    public IActionResult Login(Login model)  // Ensure 'Admin' class has an int Role
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var user = context.Logins.SingleOrDefault(a => a.Email == model.Email && a.Password == model.Password);
+
+        //        if (user != null)
+        //        {
+        //            // Store user role as string in session
+        //            HttpContext.Session.SetString("UserRole", user.Role.ToString());
+        //            HttpContext.Session.SetString("UserEmail", user.Email);
+
+        //            // Convert back to int and redirect based on role
+        //            if (user.Role == 1)  // 1 = Admin
+        //            {
+        //                return RedirectToAction("Dashboard", "Admin");
+        //            }
+        //            else if (user.Role == 2)  // 2 = User
+        //            {
+        //                return RedirectToAction("UserHome", "User");
+        //            }
+        //        }
+
+        //        ModelState.AddModelError("", "Invalid Email or Password");
+        //    }
+        //    return View(model);
+        //}
+
+
+       
+
+
+       
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult ForgotPassword()
         {
             return View();
         }

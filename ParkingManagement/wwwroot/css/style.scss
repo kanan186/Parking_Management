@@ -14,8 +14,7 @@ $textCol: #1f1f1f;
 }
 
 @mixin hero_btn($col1, $col2, $pad1, $pad2, $bRadius) {
-    display: inline-block;
-    padding: $pad1 $pad2;
+    display: inline-block.col-xl-10 px-0 mx-auto padding: $pad1 $pad2;
     background-color: $col1;
     color: $col2;
     border-radius: $bRadius;
@@ -570,6 +569,7 @@ a:focus {
 
 .pricing_section {
     position: relative;
+    padding: 50px 0;
 
     .heading_container {
         color: $white;
@@ -580,7 +580,7 @@ a:focus {
         text-align: center;
         padding: 25px;
         border-radius: 15px;
-        margin-top: 75px;
+        margin-top: 50px;
         position: relative;
         overflow: hidden;
 
@@ -727,10 +727,10 @@ a:focus {
 .info_section {
     background-color: $primary2;
     color: $white;
-    padding-top: 60px;
-    padding-bottom: 25px;
+    padding-top: 40px;
+    padding-bottom: 20px;
     width: 100%;
-    min-height: 100vh;
+    min-height: auto;
     padding: 50px 0;
 
     .info_col {

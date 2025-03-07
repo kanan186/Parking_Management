@@ -50,7 +50,7 @@ namespace ParkingManagement.Controllers
                     HttpContext.Session.SetString("UserRole", user.Role);
 
                     if (user.Role == "Admin")
-                        return RedirectToAction("userDashboard", "UserDashboard"); 
+                        return RedirectToAction("userDashboard", "UserDashboard");
 
                     return RedirectToAction("userDashboard", "UserDashboard");
                 }
@@ -60,7 +60,6 @@ namespace ParkingManagement.Controllers
 
             return View("Index");
         }
-
 
         //[HttpPost]
         //    public IActionResult Login(Login model)  // Ensure 'Admin' class has an int Role
@@ -92,10 +91,47 @@ namespace ParkingManagement.Controllers
         //}
 
 
-       
+        public IActionResult Register()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        public IActionResult Register(User model)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingUser = context.Users.Any(u => u.Email == model.Email);
+                if (existingUser)
+                {
+                    ViewBag.Error = "Email is already registered.";
+                    return View("Index");
+                }
 
-       
+                // Automatically assign "User" role
+                model.Role = "User";
+                context.Users.Add(model);
+                context.SaveChanges();
+
+                TempData["Success"] = "Registration successful! Please login.";
+                return RedirectToAction("Login");
+            }
+
+            return View("Index");
+        }
+
+        public IActionResult why_us()
+        {
+            return View();
+        }
+        public IActionResult Dashboard()
+        {
+            if (string.IsNullOrEmpty(HttpContext.Session.GetString("UserEmail")))
+                return RedirectToAction("Login");
+
+            return View();
+        }
+
         public IActionResult Logout()
         {
             HttpContext.Session.Clear();
@@ -107,6 +143,8 @@ namespace ParkingManagement.Controllers
         {
             return View();
         }
+
+        
 
         public IActionResult Privacy()
         {
